@@ -1,4 +1,4 @@
-import "@nomicfoundation/hardhat-foundry";
+// import "@nomicfoundation/hardhat-foundry";
 import type { HardhatUserConfig } from "hardhat/config";
 import "@nomicfoundation/hardhat-toolbox";
 import "@matterlabs/hardhat-zksync-deploy";
@@ -17,7 +17,45 @@ const accounts =
 const config: HardhatUserConfig = {
   // 编译配置
   solidity: {
-    version: "0.8.28",
+
+     compilers: [
+      {
+        version: "0.6.6",
+        settings: {
+          optimizer: {
+            enabled: true,
+            runs: 200,
+          },
+      },
+      },
+      {
+        version: "0.5.16",
+        settings: {
+          optimizer: {
+            enabled: true,
+            runs: 200,
+          },
+      },
+      },
+      {
+        version: "0.4.18",
+        settings: {
+          optimizer: {
+            enabled: true,
+            runs: 200,
+          },
+     },
+      },
+       {
+        version: "0.8.28",
+        settings: {
+          optimizer: {
+            enabled: true,
+            runs: 200,
+          },
+     },
+      },
+    ],
     settings: {
       optimizer: {
         enabled: true,
@@ -159,7 +197,9 @@ const config: HardhatUserConfig = {
     clear: true,
     flat: true,
     pretty: false,
-    except: ["lib"],
+    except: ["lib","ERC20"],
+    
+    spacing: 2,
   },
 
   // 合约验证配置
