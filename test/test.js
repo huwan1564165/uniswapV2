@@ -78,19 +78,25 @@ describe("测试Pair合约",async function(){
     })
     it("首次添加流动性测试",async function () {
         //给Pair合约转账，增加余额
-        await myTokens1.transfer(pairAdd,ethers.parseUnits("100"))
-        await myTokens2.transfer(pairAdd,ethers.parseUnits("100"))
+        const value0=ethers.parseUnits("100");
+        const value1=ethers.parseUnits("200");
+        await myTokens1.transfer(pairAdd,value0)
+        await myTokens2.transfer(pairAdd,value1)
 
         const balance0 = await myTokens1.balanceOf(pairAdd);
         const balance1 = await myTokens2.balanceOf(pairAdd);
 
         await pair.mint(ownerAddress);
 
-        //检查LPToken不为0
-        const liquidity=await pair.balanceOf(ownerAddress);
-        expect(liquidity).to.be.gt(0);
+        //检查LPToken数量是否正确
+        const liquidityA=await pair.balanceOf(ownerAddress);
+        const mulValue= value0*value1;
+        const sqrtValue= await sqrtBigint(mulValue);
+        const liquidityB=sqrtValue-1000n;
+        
+        expect(liquidityA).to.be.equals(liquidityB);
         //首次添加流动性LPToken总量应大于获得的LPToken
-        expect(await pair.totalSupply()).to.gt(liquidity);
+        expect(await pair.totalSupply()).to.gt(liquidityA);
 
         //检查储备量是否正确更新
         const [reserve0,reserve1]=await pair.getReserves();
@@ -107,17 +113,34 @@ describe("测试Pair合约",async function(){
 
         const balance0 = await myTokens1.balanceOf(ownerAddress);
         const balance1 = await myTokens2.balanceOf(ownerAddress);
+        const pairBalance0 = await myTokens1.balanceOf(pairAdd);
+        const pairBalance1 = await myTokens2.balanceOf(pairAdd);
         const liquidity=await pair.balanceOf(ownerAddress);
+        const totalSupply=await pair.totalSupply();
+
+        console.log("移除前-用户LP:",liquidity.toString())
+        console.log("移除前-token0代币:",balance0.toString())
+        console.log("移除前-token1代币:",balance1.toString())
 
         await pair.transfer(pairAdd,liquidity);
 
         await pair.burn(ownerAddress);
 
-        //检查账户上的token0，token1余额是否增加
+        //检查token0，token1返还数量是否正确
         const balance0After=await myTokens1.balanceOf(ownerAddress);
         const balance1After=await myTokens2.balanceOf(ownerAddress);
-        expect(balance0After).to.be.gt(balance0);
-        expect(balance1After).to.be.gt(balance1);
+        console.log("移除后-token0代币:",balance0After.toString())
+        console.log("移除后-token1代币:",balance1After.toString())
+        //根据公式计算返还代币数量
+        const return0 = (liquidity*pairBalance0) / totalSupply;
+        const return1 = (liquidity*pairBalance1) / totalSupply;
+        const balance0Sub=balance0After-balance0;
+        const balance1Sub=balance1After-balance1;
+        console.log("应返回token0代币数量：",balance0Sub.toString())
+        console.log("应返回token1代币数量：",balance1Sub.toString())
+
+        expect(balance0Sub).to.be.equals(return0);
+        expect(balance1Sub).to.be.equals(return1);
         //检查LPtoken是否销毁
         expect(await pair.balanceOf(ownerAddress)).to.equals(0);
 
@@ -220,3 +243,17 @@ describe("测试Pair合约",async function(){
     
     
 })
+//开根号
+function sqrtBigint(value) {
+    if (value < 0n) throw new Error('负数不能开根号');
+    if (value < 2n) return value;
+    
+    let x = value;
+    let y = (x + 1n) / 2n;
+    
+    while (y < x) {
+        x = y;
+        y = (value / x + x) / 2n;
+    }
+    return x;
+}

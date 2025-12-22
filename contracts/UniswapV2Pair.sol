@@ -124,8 +124,15 @@ contract UniswapV2Pair is IUniswapV2Pair, UniswapV2ERC20 {
         uint _kLast = kLast; // gas savings
         if (feeOn) {
             if (_kLast != 0) {
+                //开根号rootK
+                // x*Y =   X*Y =K1
                 uint rootK = Math.sqrt(uint(_reserve0).mul(_reserve1));
                 uint rootKLast = Math.sqrt(_kLast);
+            //     K1-K=k2
+            //    (rootK-rootKLast)/6=K2
+            //     (rootK-rootKLast)*5/6 + rootKLast = totalSupply
+            //     (rootK-rootKLast)/6 = A   
+            //         (rootK-rootKLast)*5+ rootKLast/((rootK-rootKLast)/6) = totalSupply/a
                 if (rootK > rootKLast) {
                     uint numerator = totalSupply.mul(rootK.sub(rootKLast));
                     uint denominator = rootK.mul(5).add(rootKLast);

@@ -11,4 +11,6 @@ contract MyTokens is ERC20 {
     ) ERC20(name_, symbol_) {
         _mint(msg.sender, initialSupply);
     }
+
+    
 }
