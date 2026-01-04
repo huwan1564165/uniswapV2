@@ -27,28 +27,29 @@
     "@types/mocha": "^10.0.10",
     "@types/node": "^24.7.2",
     "chai": "^4.5.0",
-    "ethers": "^6.15.0",
+    "dotenv": "^16.4.7",
+    "ethers": "^6.16.0",
     "hardhat": "^2.26.3",
+    "hardhat-abi-exporter": "^2.10.1",
+    "hardhat-contract-sizer": "^2.10.0",
     "hardhat-gas-reporter": "^2.3.0",
     "solidity-coverage": "^0.8.16",
     "ts-node": "^10.9.2",
     "typechain": "^8.3.2",
-    "typescript": "^5.9.3",
-    "hardhat-abi-exporter": "^2.10.1",
-    "hardhat-contract-sizer": "^2.10.0",
-    "dotenv": "^16.4.7"
+    "typescript": "^5.9.3"
   },
   "dependencies": {
+    "@matterlabs/hardhat-zksync-deploy": "1.1.2",
+    "@matterlabs/hardhat-zksync-solc": "0.3.16",
     "@openzeppelin/contracts": "5.4.0",
     "@openzeppelin/contracts-upgradeable": "5.4.0",
     "@openzeppelin/hardhat-upgrades": "^2.5.0",
-    "@matterlabs/hardhat-zksync-deploy": "1.1.2",
-    "@matterlabs/hardhat-zksync-solc": "0.3.16",
-    "zksync-ethers": "6.0.0",
-    "gate-evm-tools": "^1.0.0"
+    "gate-evm-tools": "^1.0.0",
+    "keccak256": "^1.0.6",
+    "merkletreejs": "^0.6.0",
+    "zksync-ethers": "6.0.0"
   },
   "engines": {
     "node": ">=18.0.0"
   }
 }
-

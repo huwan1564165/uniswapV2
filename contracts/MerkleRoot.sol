@@ -2,7 +2,7 @@
 pragma solidity ^0.8.0;
 
 import './MyTokens.sol';
-contract work01 {
+contract MerkleRoot {
     address owner;
     MyTokens myTokens;
     uint256 totalSupply;
@@ -33,6 +33,7 @@ contract work01 {
         }
     }
     
+    //为每个地址设置 mapping 余额
     function transferAll1(address[] memory addrs,uint256 value)public{
         uint len = addrs.length;
         uint256 values=value*len;
@@ -49,6 +50,8 @@ contract work01 {
             value[i]=balances[addrs[i]];
         }
     }
+
+    //用户领取时转账并清零
     function getUserToken2()public  {
         uint256 value=balances[msg.sender];
         balances[msg.sender]=0;
