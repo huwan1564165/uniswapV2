@@ -79,22 +79,27 @@ describe("测试数组练习合约", async function(){
     })
     it("VotingSystem合约测试",async function(){
         const candidate0 = ["小明","小张","小美"]
-        const votes0 = [1n,0n,2n]
+        let votes0 = [0n,0n,0n]
         // 添加候选人
         await votingSystem.addCandidate("小明");
         await votingSystem.addCandidate("小张");
         await votingSystem.addCandidate("小美");
+
         //投票
-        await votingSystem.vote(2);
-        await votingSystem.vote(0);
-        await votingSystem.vote(2);
+        const voteing=async function(candidateIndex){
+            await votingSystem.vote(candidateIndex);
+            votes0[candidateIndex]++;
+        }
+        await voteing(2);
+        await voteing(0);
+        await voteing(2);
         //获取所有候选人票数
         const [candidate1,votes1] = await votingSystem.getAllVotes();
-        
+
         for(var i=0;i<candidate0.length;i++){
             expect(candidate1[i]).to.be.equals(candidate0[i])
         }
-        for(var i=0;i<candidate0.length;i++){
+        for(var i=0;i<votes1.length;i++){
             expect(votes1[i]).to.be.equals(votes0[i])
         }
         
