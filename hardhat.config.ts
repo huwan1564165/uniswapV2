@@ -8,7 +8,7 @@ import * as dotenv from "dotenv";
 dotenv.config();
 import "hardhat-contract-sizer";
 import "hardhat-gas-reporter";
-import "@OpenZeppelin/hardhat-upgrades";
+import "@openzeppelin/hardhat-upgrades"; 
 import "@typechain/hardhat";
 
 const accounts =
@@ -61,20 +61,20 @@ const config: HardhatUserConfig = {
         enabled: true,
         runs: 200,
       },
-      viaIR: true,
-      outputSelection: {
-        '*': {
-          '*': [
-            'abi',
-            'evm.bytecode',
-            'evm.deployedBytecode',
-            'evm.methodIdentifiers',
-            'metadata',
-            'storageLayout'  // 用于升级验证
-          ],
-          '': ['ast']  // 源代码 AST
-        },
-      },
+      // viaIR: true,
+      // outputSelection: {
+      //   '*': {
+      //     '*': [
+      //       'abi',
+      //       'evm.bytecode',
+      //       'evm.deployedBytecode',
+      //       'evm.methodIdentifiers',
+      //       'metadata',
+      //       'storageLayout'  // 用于升级验证
+      //     ],
+      //     '': ['ast']  // 源代码 AST
+      //   },
+      // },
     },
   },
 
