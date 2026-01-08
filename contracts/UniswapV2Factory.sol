@@ -15,6 +15,8 @@ contract UniswapV2Factory is IUniswapV2Factory {
     //存储所有已创建的配对合约地址
     address[] public allPairs;
 
+    bytes32 public hashBytecode = keccak256(type(UniswapV2Pair).creationCode);
+
     //当新交易对创建时触发的事件
     event PairCreated(address indexed token0, address indexed token1, address pair, uint);
 
@@ -41,7 +43,7 @@ contract UniswapV2Factory is IUniswapV2Factory {
         require(getPair[token0][token1] == address(0), 'UniswapV2: PAIR_EXISTS'); // single check is sufficient
         //获取 UniswapV2Pair 合约的创建字节码
         bytes memory bytecode = type(UniswapV2Pair).creationCode;
-        
+
         //创建合约
         //根据排序后的 token 地址生成盐值
         //用于 CREATE2 操作码，确保相同 token 对总是生成相同的合约地址

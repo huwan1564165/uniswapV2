@@ -54,7 +54,7 @@ describe("测试Pair合约",async function(){
         token0=myTokens1Add<myTokens2Add?myTokens1Add:myTokens2Add;
         token1=myTokens1Add>myTokens2Add?myTokens1Add:myTokens2Add;
 
-        
+        console.log(await factory.hashBytecode());
 
 
     })
